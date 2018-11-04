@@ -1,4 +1,6 @@
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class Detalji {
@@ -41,6 +43,23 @@ public class Detalji {
 			System.out.println("uspjesno kreiran racun\n");
 			listaRacun.add(racun);
 
+		}
+
+		try {
+
+			File fajlRacuni = new File("Racuni.txt");
+			PrintWriter printanjeRacuni = new PrintWriter(fajlRacuni);
+
+			for (Racun e : listaRacun) {
+
+				printanjeRacuni
+						.println(e.getBrojRacuna() + " " + e.getImeVlasnika() + " " + e.getIznosRacuna() + " KM");
+				System.out.println();
+			}
+			printanjeRacuni.close();
+
+		} catch (Exception ex) {
+			System.out.println("nema fajla:");
 		}
 
 	}
@@ -88,7 +107,7 @@ public class Detalji {
 
 		if (iznos > 0) {
 			validanTransfer = true;
-		}else {
+		} else {
 			System.out.println("negativni iznos unesen GRESKA: ");
 			validanTransfer = false;
 		}
@@ -99,13 +118,12 @@ public class Detalji {
 
 				validanRacun1 = true;
 			}
-			
+
 			if (e.getBrojRacuna() == brojRacuna2) {
 
 				validanRacun2 = true;
 			}
 		}
-		
 
 		for (Racun e : listaRacun) {
 
@@ -120,31 +138,27 @@ public class Detalji {
 
 			}
 		}
-		
+
 		if (validanRacun1 == true && validanRacun2 == true && validanTransfer == true) {
-			
+
 			for (Racun e : listaRacun) {
-				
+
 				if (e.getBrojRacuna() == brojRacuna1) {
 					e.setIznosRacuna(e.getIznosRacuna() - iznos);
 				}
-				
+
 				if (e.getBrojRacuna() == brojRacuna2) {
 					e.setIznosRacuna(e.getIznosRacuna() + iznos);
 				}
 			}
-			
+
 			System.out.println("transakcija izvrsena: ");
-		}else {
-			
+		} else {
+
 			System.out.println("greska u unosu");
 		}
 	}
 
-	
-	
-	
-	
 	public void ispis() {
 
 		for (Racun e : listaRacun) {
