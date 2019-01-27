@@ -1,7 +1,9 @@
-
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Detalji {
 
@@ -9,7 +11,30 @@ public class Detalji {
 	ArrayList<String> listaUplata = new ArrayList<>();
 	Racun racun = new Racun();
 
-	public void kreirajRacun(int brojRacuna, String imeVlasnika, double iznosRacuna) {
+	public void Search() throws IOException {
+
+		File fajl = new File("Racuni.txt");
+		Scanner skaner = new Scanner(fajl);
+
+		while (skaner.hasNext()) {
+
+			int broj = skaner.nextInt();
+			String ime = skaner.next();
+			String prezime = skaner.next();
+			double stanje = skaner.nextDouble();
+
+			String imePrezime = ime + " " + prezime;
+			Racun r = new Racun(broj, imePrezime, stanje);
+
+			// nesto.add(broj);
+			listaRacun.add(r);
+
+		}
+
+		skaner.close();
+	}
+
+	public void kreirajRacun(int brojRacuna, String imeVlasnika, double iznosRacuna) throws IOException {
 
 		Racun racun = new Racun(brojRacuna, imeVlasnika, iznosRacuna);
 
@@ -43,6 +68,13 @@ public class Detalji {
 			System.out.println("uspjesno kreiran racun\n");
 			listaRacun.add(racun);
 
+			File fajlRacuni = new File("Racuni.txt");
+			FileWriter pisanje = new FileWriter(fajlRacuni, true);
+			PrintWriter pi = new PrintWriter(fajlRacuni);
+
+			pisanje.close();
+			pi.close();
+
 		}
 
 		try {
@@ -52,8 +84,7 @@ public class Detalji {
 
 			for (Racun e : listaRacun) {
 
-				printanjeRacuni
-						.println(e.getBrojRacuna() + " " + e.getImeVlasnika() + " " + e.getIznosRacuna() + " KM");
+				printanjeRacuni.println(e.getBrojRacuna() + " " + e.getImeVlasnika() + " " + e.getIznosRacuna());
 				System.out.println();
 			}
 			printanjeRacuni.close();
@@ -61,21 +92,18 @@ public class Detalji {
 		} catch (Exception ex) {
 			System.out.println("nema fajla:");
 		}
-
 	}
 
-	public void uplata(int brojRacuna, double uplata) {
+	public void uplata(int brojRacuna, double uplata) throws IOException {
 
-		boolean validan = true;
+		boolean validan = true, imaRacuna = false;
 
 		for (Racun e : listaRacun) {
 
 			if (e.getBrojRacuna() == brojRacuna) {
 
-				validan = true;
-			} else {
+				imaRacuna = true;
 
-				System.out.println("broj racuna nije u bazi: \n");
 			}
 		}
 
@@ -85,7 +113,11 @@ public class Detalji {
 			System.out.println("negativna uplata: \n");
 		}
 
-		if (validan) {
+		if (validan == true && imaRacuna == true) {
+
+			File fajl = new File("Racuni.txt");
+			FileWriter pisanje = new FileWriter(fajl);
+			PrintWriter printanjeRacuni = new PrintWriter(fajl);
 
 			for (Racun e : listaRacun) {
 
@@ -95,11 +127,21 @@ public class Detalji {
 					e.setIznosRacuna(uplata + e.getIznosRacuna());
 
 				}
+
+				printanjeRacuni.println(e.getBrojRacuna() + " " + e.getImeVlasnika() + " " + e.getIznosRacuna());
+				System.out.println();
+
 			}
+			printanjeRacuni.close();
+			pisanje.close();
+
+		} else {
+
+			System.out.println("Broj racuna se ne naalazii u bazi");
 		}
 	}
 
-	public void transfer(int brojRacuna1, int brojRacuna2, double iznos) {
+	public void transfer(int brojRacuna1, int brojRacuna2, double iznos) throws IOException {
 
 		boolean validanTransfer = false;
 		boolean validanRacun1 = false;
@@ -135,11 +177,14 @@ public class Detalji {
 					System.out.println("nema para");
 					validanTransfer = false;
 				}
-
 			}
 		}
 
 		if (validanRacun1 == true && validanRacun2 == true && validanTransfer == true) {
+
+			File fajl = new File("Racuni.txt");
+			FileWriter pisanje = new FileWriter(fajl);
+			PrintWriter printanjeRacuni = new PrintWriter(fajl);
 
 			for (Racun e : listaRacun) {
 
@@ -150,7 +195,13 @@ public class Detalji {
 				if (e.getBrojRacuna() == brojRacuna2) {
 					e.setIznosRacuna(e.getIznosRacuna() + iznos);
 				}
+
+				printanjeRacuni.println(e.getBrojRacuna() + " " + e.getImeVlasnika() + " " + e.getIznosRacuna());
+				System.out.println();
+
 			}
+			pisanje.close();
+			printanjeRacuni.close();
 
 			System.out.println("transakcija izvrsena: ");
 		} else {
@@ -166,5 +217,4 @@ public class Detalji {
 			System.out.println(e.getBrojRacuna() + " " + e.getImeVlasnika() + " " + e.getIznosRacuna() + " KM \n");
 		}
 	}
-
 }

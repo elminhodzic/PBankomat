@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class BankomatTest {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception, InputMismatchException {
 		// TODO Auto-generated method stub
 
 		Scanner unos = new Scanner(System.in);
@@ -12,9 +12,12 @@ public class BankomatTest {
 		int opcija = 1;
 
 		Detalji d = new Detalji();
+		
+		d.Search();
 
 		while (opcija != 0) {
 
+			
 			System.out.println("Unesite neku od ponudjenih opcija: \n");
 			System.out.println("1.Kreiraj racun \n2.Uplata na racun \n3.Transfer novca \n4.Stanje \n0.Prekid");
 
@@ -29,12 +32,16 @@ public class BankomatTest {
 
 					unos.nextLine();
 					System.out.println("Unesite ime vlasnika: ");
-					String imeVlasnika = unos.nextLine();
+					String imeVlasnika = unos.next();
+					System.out.println("Unesi prezime vlasnika: ");
+					String prezimeVlasnika = unos.next();
 
 					System.out.println("Unesite stanje na racunu u KM-ovima: ");
 					double stanjeRacuna = unos.nextDouble();
+					
+					String imePrezime = imeVlasnika + " " + prezimeVlasnika;
 
-					d.kreirajRacun(brojRacuna, imeVlasnika, stanjeRacuna);
+					d.kreirajRacun(brojRacuna, imePrezime, stanjeRacuna);
 					System.out.println();
 
 				}

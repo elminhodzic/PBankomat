@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Racun {
+public class Racun implements Serializable {
 
 	private int brojRacuna;
 	private String imeVlasnika;
