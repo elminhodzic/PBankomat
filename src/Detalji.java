@@ -7,10 +7,20 @@ import java.util.Scanner;
 
 public class Detalji {
 
+	/*
+	 * lista koja cuva sve racune
+	 */
 	ArrayList<Racun> listaRacun = new ArrayList<>();
+	/*
+	 * lista koja cuva sve uplate racuna
+	 */
 	ArrayList<String> listaUplata = new ArrayList<>();
 	Racun racun = new Racun();
 
+	/*
+	 * metoda koja skenira fajl "Racuni.txt" i sve informacije koje su u njoj
+	 * smjesta u arrayListu koja ce bit pozvana pri pokretanju programa
+	 */
 	public void Search() throws IOException {
 
 		File fajl = new File("Racuni.txt");
@@ -34,6 +44,9 @@ public class Detalji {
 		skaner.close();
 	}
 
+	/*
+	 * metoda koja kreira korisnika
+	 */
 	public void kreirajRacun(int brojRacuna, String imeVlasnika, double iznosRacuna) throws IOException {
 
 		Racun racun = new Racun(brojRacuna, imeVlasnika, iznosRacuna);
@@ -94,10 +107,16 @@ public class Detalji {
 		}
 	}
 
+	/*
+	 * metoda koja vrsi uplatu novca na zeljenu racun
+	 */
 	public void uplata(int brojRacuna, double uplata) throws IOException {
 
 		boolean validan = true, imaRacuna = false;
 
+		/*
+		 * ispitujemo da li se odabrani racun nalazi u bazi
+		 */
 		for (Racun e : listaRacun) {
 
 			if (e.getBrojRacuna() == brojRacuna) {
@@ -107,12 +126,18 @@ public class Detalji {
 			}
 		}
 
-		if (uplata < 0) {
+		/*
+		 * uplata mora biti 0 ili veca
+		 */
+		if (uplata <= 0) {
 
 			validan = false;
 			System.out.println("negativna uplata: \n");
 		}
 
+		/*
+		 * ako je racun validan i uplata validna vrsimo uplatu na racun
+		 */
 		if (validan == true && imaRacuna == true) {
 
 			File fajl = new File("Racuni.txt");
@@ -141,6 +166,9 @@ public class Detalji {
 		}
 	}
 
+	/*
+	 * metoda koja koja vrsi transakciju novca sa jednog racuna na drugi
+	 */
 	public void transfer(int brojRacuna1, int brojRacuna2, double iznos) throws IOException {
 
 		boolean validanTransfer = false;
@@ -210,6 +238,9 @@ public class Detalji {
 		}
 	}
 
+	/*
+	 * metoda koja ispisuje sve podatke racuna na konzoli
+	 */
 	public void ispis() {
 
 		for (Racun e : listaRacun) {
