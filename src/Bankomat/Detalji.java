@@ -1,5 +1,6 @@
 package Bankomat;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,27 +23,34 @@ public class Detalji {
 	 * metoda koja skenira fajl "Racuni.txt" i sve informacije koje su u njoj
 	 * smjesta u arrayListu koja ce bit pozvana pri pokretanju programa
 	 */
-	public void Search() throws IOException {
+	public void Search() {
 
 		File fajl = new File("Racuni.txt");
-		Scanner skaner = new Scanner(fajl);
+		Scanner skaner;
+		try {
+			skaner = new Scanner(fajl);
+			
+			while (skaner.hasNext()) {
 
-		while (skaner.hasNext()) {
+				int broj = skaner.nextInt();
+				String ime = skaner.next();
+				String prezime = skaner.next();
+				double stanje = skaner.nextDouble();
 
-			int broj = skaner.nextInt();
-			String ime = skaner.next();
-			String prezime = skaner.next();
-			double stanje = skaner.nextDouble();
+				String imePrezime = ime + " " + prezime;
+				Racun r = new Racun(broj, imePrezime, stanje);
 
-			String imePrezime = ime + " " + prezime;
-			Racun r = new Racun(broj, imePrezime, stanje);
+				//nesto.add(broj);
+				listaRacuna.add(r);
 
-			//nesto.add(broj);
-			listaRacuna.add(r);
-
+			}
+			
+			skaner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		skaner.close();
 	}
 
 	/*
